@@ -259,7 +259,8 @@ class LazySaveTestMixin(object):
 
 
 class GenreListTestMixin(object):
-    """Tests access to the ``genres`` property as a list.
+    """Tests access to the ``genres`` property as a list and returning the
+    ``genre`` property as a concatenated string of all genres.
     """
 
     def test_read_genre_list(self):
@@ -280,7 +281,9 @@ class GenreListTestMixin(object):
         mediafile.save()
 
         mediafile = MediaFile(mediafile.path)
-        self.assertEqual(mediafile.genre, 'one')
+        self.assertEqual(mediafile.genres[0], 'one')
+        # maybe a customizable separator is needed here
+        self.assertEqual(mediafile.genre, 'one\ntwo')
 
     def test_append_genre_list(self):
         mediafile = self._mediafile_fixture('full')
@@ -813,7 +816,7 @@ class WMATest(ReadWriteTestBase, ExtendedImageStructureTestMixin,
         mediafile.save()
 
         mediafile = MediaFile(mediafile.path)
-        self.assertIn(mediafile.genre, [u'one', u'two'])
+        self.assertIn(mediafile.genre, [u'one\ntwo', u'two\none'])
 
     def test_read_pure_tags(self):
         mediafile = self._mediafile_fixture('pure')

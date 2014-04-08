@@ -490,10 +490,16 @@ class ListStorageStyle(StorageStyle):
     handles packing and unpacking the values into lists.
     """
     def get(self, mutagen_file):
-        """Get the first value in the field's value list.
+        """Get the first value in the field's value list or, if it is a list of
+        strings, join it together into a newline-separated list.
         """
         try:
-            return self.get_list(mutagen_file)[0]
+            field_list = self.get_list(mutagen_file)
+            if all(isinstance(f, basestring) for f in field_list):
+                return '\n'.join(field_list)
+            else:
+                # fall back to returning just the first option
+                return field_list[0]
         except IndexError:
             return None
 
@@ -511,10 +517,14 @@ class ListStorageStyle(StorageStyle):
             return []
 
     def set(self, mutagen_file, value):
-        """Set an individual value as the only value for the field using
-        this style.
+        """Set an individual value as the value for the field, splitting
+        it at newlines if necessary.
         """
-        self.set_list(mutagen_file, [value])
+        try:
+            self.set_list(mutagen_file, value.split('\n'))
+        except AttributeError:
+            # it's not a splittable type
+            self.set_list(mutagen_file, [value])
 
     def set_list(self, mutagen_file, values):
         """Set all values for the field using this style. `values`
