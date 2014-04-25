@@ -283,7 +283,7 @@ class GenreListTestMixin(object):
         mediafile = MediaFile(mediafile.path)
         self.assertEqual(mediafile.genres[0], 'one')
         # maybe a customizable separator is needed here
-        self.assertEqual(mediafile.genre, 'one\ntwo')
+        self.assertEqual(mediafile.genre, 'one\\\\two')
 
     def test_append_genre_list(self):
         mediafile = self._mediafile_fixture('full')
@@ -816,7 +816,7 @@ class WMATest(ReadWriteTestBase, ExtendedImageStructureTestMixin,
         mediafile.save()
 
         mediafile = MediaFile(mediafile.path)
-        self.assertIn(mediafile.genre, [u'one\ntwo', u'two\none'])
+        self.assertIn(mediafile.genre, [u'one\\\\two', u'two\\\\one'])
 
     def test_read_pure_tags(self):
         mediafile = self._mediafile_fixture('pure')

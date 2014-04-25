@@ -496,7 +496,7 @@ class ListStorageStyle(StorageStyle):
         try:
             field_list = self.get_list(mutagen_file)
             if all(isinstance(f, basestring) for f in field_list):
-                return '\n'.join(field_list)
+                return '\\\\'.join(field_list)
             else:
                 # fall back to returning just the first option
                 return field_list[0]
@@ -521,7 +521,7 @@ class ListStorageStyle(StorageStyle):
         it at newlines if necessary.
         """
         try:
-            self.set_list(mutagen_file, value.split('\n'))
+            self.set_list(mutagen_file, value.split('\\\\'))
         except AttributeError:
             # it's not a splittable type
             self.set_list(mutagen_file, [value])
