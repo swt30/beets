@@ -521,7 +521,7 @@ class ListStorageStyle(StorageStyle):
 
     def set(self, mutagen_file, value):
         """Set an individual value as the value for the field, splitting
-        it at newlines if necessary.
+        it at double backslashes if necessary.
         """
         try:
             self.set_list(mutagen_file, value.split('\\\\'))
