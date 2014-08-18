@@ -495,10 +495,13 @@ class ListStorageStyle(StorageStyle):
         """
         try:
             field_list = self.get_list(mutagen_file)
-            if all(isinstance(f, basestring) for f in field_list):
+            is_list_of_strings = all(isinstance(f, basestring)
+                                     for f in field_list)
+            if field_list and is_list_of_strings:
                 return '\\\\'.join(field_list)
             else:
                 # fall back to returning just the first option
+                # (will trigger an IndexError if the list is empty)
                 return field_list[0]
         except IndexError:
             return None
